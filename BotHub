@@ -1,0 +1,320 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "BotHub", HidePremium = false, SaveConfig = true, ConfigFolder = "NewFree", IntroText = "BotLibary Libary"})
+
+local Tab = Window:MakeTab({
+	Name = "Tab Default",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddLabel("Script Create by isllanJnXxxxx9")
+Tab:AddLabel("  used library  : Orion library ")
+
+Tab:AddParagraph("this script","hello user, use this script with care you may get banned because the instant life button is capable of making you IMMORTAL to anything, please use with care this script took a long time to do so I hope you like the Script by Editor isllanJnXxxxx9")
+
+local Tab = Window:MakeTab({
+	Name = "Tab main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "Recuperar Vida!",
+  Callback = function()
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+      local humanoid = player.Character.Humanoid
+      while wait(1) do
+        humanoid.Health = humanoid.MaxHealth
+      end
+    end
+  end    
+})
+
+Tab:AddTextbox({
+  Name = "aumenta volocidade",
+  Default = "",
+  TextDisappear = true,
+  Callback = function(Value)
+    local speed = tonumber(Value)
+    if speed and speed > 0 then
+      local player = game.Players.LocalPlayer
+      if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+        local humanoid = player.Character.Humanoid
+        humanoid.WalkSpeed = speed
+      end
+    else
+      print("Por favor, insira um número válido para a velocidade.")
+    end
+  end	  
+})
+
+Tab:AddTextbox({
+  Name = "aumenta JumpPower",
+  Default = "",
+  TextDisappear = true,
+  Callback = function(Value)
+    local jumpPower = tonumber(Value)
+    if jumpPower and jumpPower > 0 then
+      local player = game.Players.LocalPlayer
+      if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+        local humanoid = player.Character.Humanoid
+        humanoid.JumpPower = jumpPower
+      end
+    else
+      print("Por favor, insira um número válido para o poder de salto.")
+    end
+  end	  
+})
+
+local ESPEnabled = false
+
+local function CreateESP(player)
+  for _, part in pairs(player.Character:GetChildren()) do
+    if part:IsA("BasePart") then
+      local highlight = Instance.new("BoxHandleAdornment")
+      highlight.Adornee = part
+      highlight.AlwaysOnTop = true
+      highlight.ZIndex = 10
+      highlight.Size = part.Size
+      highlight.Color3 = Color3.new(0, 1, 0)
+      highlight.Parent = part
+    end
+  end
+end
+
+local function RemoveESP(player)
+  for _, part in pairs(player.Character:GetChildren()) do
+    if part:IsA("BasePart") then
+      for _, adornment in pairs(part:GetChildren()) do
+        if adornment:IsA("BoxHandleAdornment") then
+          adornment:Destroy()
+        end
+      end
+    end
+  end
+end
+
+Tab:AddToggle({
+  Name = "ESP Player",
+  Default = false,
+  Callback = function(Value)
+    ESPEnabled = Value
+    if ESPEnabled then
+      for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character then
+          CreateESP(player)
+        end
+      end
+    else
+      for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character then
+          RemoveESP(player)
+        end
+      end
+    end
+  end    
+})
+
+game.Players.PlayerAdded:Connect(function(player)
+  if ESPEnabled then
+    player.CharacterAdded:Connect(function()
+      CreateESP(player)
+    end)
+  end
+end)
+
+game.Players.PlayerRemoving:Connect(function(player)
+  if ESPEnabled then
+    RemoveESP(player)
+  end
+end)
+
+Tab:AddParagraph("Aviso para o cliente","ola jogador local por favo nao use esse script para fazer maldades.")
+
+local Tab = Window:MakeTab({
+	Name = "Tab Gui",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Gui de cordenadas (Beta)",
+	Callback = function()
+   local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local CoordinatesLabel = Instance.new("TextLabel")
+local CopyButton = Instance.new("TextButton")
+local DeleteButton = Instance.new("TextButton")
+local CloseButton = Instance.new("TextButton")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.new(1, 1, 1)
+Frame.Size = UDim2.new(0, 200, 0, 100)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+
+CoordinatesLabel.Parent = Frame
+CoordinatesLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+CoordinatesLabel.Size = UDim2.new(1, 0, 0.5, 0)
+CoordinatesLabel.Text = "Coordenadas:"
+
+local function updateCoordinates()
+    local player = game.Players.LocalPlayer
+    local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidRootPart then
+        local position = humanoidRootPart.Position
+        CoordinatesLabel.Text = string.format("Coordenadas: X: %f, Y: %f, Z: %f", position.X, position.Y, position.Z)
+    end
+end
+
+CopyButton.Parent = Frame
+CopyButton.Text = "Copiar"
+CopyButton.Size = UDim2.new(0.5, 0, 0.5, 0)
+CopyButton.Position = UDim2.new(0, 0, 0.5, 0)
+CopyButton.MouseButton1Click:Connect(function()
+    setclipboard(CoordinatesLabel.Text)
+end)
+
+DeleteButton.Parent = Frame
+DeleteButton.Text = "Excluir"
+DeleteButton.Size = UDim2.new(0.5, 0, 0.5, 0)
+DeleteButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+DeleteButton.MouseButton1Click:Connect(function()
+    CoordinatesLabel.Text = "Coordenadas:"
+end)
+
+CloseButton.Parent = ScreenGui
+CloseButton.Text = "X"
+CloseButton.Size = UDim2.new(0, 50, 0, 50)
+CloseButton.Position = UDim2.new(0.5, 150, 0.5, -25)
+CloseButton.BackgroundColor3 = Color3.new(1, 0, 0)
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+while true do
+    wait(1)
+    updateCoordinates()
+end
+
+  	end    
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "Tab troll",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local pullPlayersEnabled = false
+
+local function PullPlayers()
+  local localPlayerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+  while pullPlayersEnabled do
+    for _, player in pairs(game.Players:GetPlayers()) do
+      if player ~= game.Players.LocalPlayer then
+        player.Character.HumanoidRootPart.CFrame = localPlayerPosition
+      end
+    end
+    wait(1)
+  end
+end
+
+Tab:AddToggle({
+  Name = "Puxar Jogadores",
+  Default = false,
+  Callback = function(Value)
+    pullPlayersEnabled = Value
+    if pullPlayersEnabled then
+      PullPlayers()
+    end
+  end    
+})
+
+ local noclipEnabled = false
+
+local function NoclipLoop()
+  while noclipEnabled do
+    if game.Players.LocalPlayer.Character then
+      for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+        if part:IsA("BasePart") then
+          part.CanCollide = false
+        end
+      end
+    end
+    game:GetService("RunService").Stepped:wait()
+  end
+end
+
+Tab:AddToggle({
+  Name = "Noclip",
+  Default = false,
+  Callback = function(Value)
+    noclipEnabled = Value
+    if noclipEnabled then
+      NoclipLoop()
+    else
+      if game.Players.LocalPlayer.Character then
+        for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+          if part:IsA("BasePart") then
+            part.CanCollide = true
+          end
+        end
+      end
+    end
+  end    
+})
+
+Tab:AddButton({
+    Name = "Teleportar para Jogador Aleatório",
+    Callback = function()
+        local players = game:GetService("Players")
+        local localPlayer = players.LocalPlayer
+        local allPlayers = players:GetPlayers()
+        local randomPlayer = allPlayers[math.random(1, #allPlayers)]
+
+        if randomPlayer and randomPlayer.Character and randomPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local randomPlayerPosition = randomPlayer.Character.HumanoidRootPart.Position
+            if localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(randomPlayerPosition)
+            end
+        else
+            print("Não foi possível encontrar um jogador válido para teleportar.")
+        end
+    end    
+})
+
+local teleportToggle = false
+local teleportDelay = 1
+
+Tab:AddToggle({
+    Name = "Teleporta para um jogador automaticamente",
+    Default = false,
+    Callback = function(Value)
+        teleportToggle = Value
+        if teleportToggle then
+            print("Teleporte Aleatório ativado.")
+        else
+            print("Teleporte Aleatório desativado.")
+        end
+    end    
+})
+
+while true do
+    wait(teleportDelay)
+    if teleportToggle then
+        local players = game:GetService("Players")
+        local localPlayer = players.LocalPlayer
+        local allPlayers = players:GetPlayers()
+        local randomPlayer = allPlayers[math.random(1, #allPlayers)]
+
+        if randomPlayer and randomPlayer.Character and randomPlayer.Character:FindFirstChild("HumanoidRootPart") and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            localPlayer.Character.HumanoidRootPart.CFrame = randomPlayer.Character.HumanoidRootPart.CFrame
+        end
+    end
+end
